@@ -34,7 +34,7 @@
             "matches": ["<all_urls>"],
             "js": [
                 "vendor/d3.min.js",
-                "vendor/d3-cloud.js",
+                "vendor/d3-cloud.min.js",
                 "lib/word-cloud-generator.js"
             ]
         }
