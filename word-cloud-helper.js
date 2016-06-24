@@ -1,5 +1,8 @@
 function cleanTextContent(elem) {
-  return elem.textContent.trim().replace(/[^a-zA-Z0-9\s]/g, '').toUpperCase();
+  return elem.textContent.trim()
+    .replace(/,/g, ' ')
+    .replace(/[^a-zA-Z0-9\s\-]/g, '')
+    .toUpperCase();
 }
 
 function getWords(selector) {
@@ -11,12 +14,19 @@ function getWords(selector) {
   return words;
 }
 
+function filterWords(words, ignoreWords, minWordSize) {
+  let regex = RegExp(`^(?:${ignoreWords.join('|')})$`, 'i');
+  console.debug({regex});
+  return words.filter(word => word.length >= minWordSize && !regex.test(word));
+}
+
 function generateWordCloud(request, sender, sendResposne) {
   try {
-    let {selector, options} = request;
+    let {selector, options:{wordOptions, generatorOptions}} = request;
     let words = getWords(selector);
-    console.debug({words, options});
-    new WordCloudGenerator().generateWordCloud(words, options);
+    let filteredWords = filterWords(words, wordOptions.ignoreWords, wordOptions.minWordSize);
+    console.debug({filteredWords, words, wordOptions, generatorOptions});
+    new WordCloudGenerator().generateWordCloud(filteredWords, generatorOptions);
   } catch(err) {
     console.error(err);
   } finally {

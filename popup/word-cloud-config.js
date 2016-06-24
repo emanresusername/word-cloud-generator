@@ -1,11 +1,17 @@
 function getOptions() {
   return {
-    phraseSize: Number(document.querySelector('input[name="phrase-size"]').value)
+    wordOptions: {
+      minWordSize: Number(document.getElementById('minWordSizeInput').value),
+      ignoreWords: document.getElementById('filterWordsTextarea').value.trim().split(/\W+/)
+    },
+    generatorOptions: {
+      phraseSize: Number(document.getElementById('phraseSizeInput').value)
+    }
   };
 }
 
 document.addEventListener("click", function(e) {
-  if (!e.target.classList.contains("generate-button")) {
+  if (e.target.id != "generateButton") {
     return;
   }
 
