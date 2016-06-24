@@ -6,6 +6,8 @@ function getOptions() {
       phraseSize: Number(document.getElementById('phraseSizeInput').value)
     },
     generatorOptions: {
+      minFontSize: Number(document.getElementById('minFontSizeInput').value),
+      maxFontSize: Number(document.getElementById('maxFontSizeInput').value)
     }
   };
 }
