@@ -2,10 +2,10 @@ function getOptions() {
   return {
     wordOptions: {
       minWordSize: Number(document.getElementById('minWordSizeInput').value),
-      ignoreWords: document.getElementById('filterWordsTextarea').value.trim().split(/\W+/)
+      ignoreWords: document.getElementById('filterWordsTextarea').value.trim().split(/\W+/),
+      phraseSize: Number(document.getElementById('phraseSizeInput').value)
     },
     generatorOptions: {
-      phraseSize: Number(document.getElementById('phraseSizeInput').value)
     }
   };
 }
