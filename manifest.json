@@ -14,13 +14,14 @@
 
     "applications": {
         "gecko": {
-            "id": "word-cloud-generator@example.org",
-            "strict_min_version": "45.0"
+            "id": "word@cloud.generator",
+            "strict_min_version": "48.0"
         }
     },
 
     "permissions": [
-        "activeTab"
+        "activeTab",
+        "storage"
     ],
 
     "browser_action": {
