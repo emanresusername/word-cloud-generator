@@ -7,7 +7,9 @@ function getOptions() {
     },
     generatorOptions: {
       minFontSize: Number(document.getElementById('minFontSizeInput').value),
-      maxFontSize: Number(document.getElementById('maxFontSizeInput').value)
+      maxFontSize: Number(document.getElementById('maxFontSizeInput').value),
+      svgWidth: Number(document.getElementById('svgWidth').value),
+      svgHeight: Number(document.getElementById('svgHeight').value)
     }
   };
 }

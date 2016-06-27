@@ -36,6 +36,16 @@ function filterWords(words, options) {
   return words.filter(word => word.length >= minWordSize && !regex.test(word));
 }
 
+// http://stackoverflow.com/a/23589931
+function openSvgInTab(svg) {
+  let serializer = new XMLSerializer();
+  let svg_blob = new Blob([serializer.serializeToString(svg)],
+                          {'type': "image/svg+xml"});
+  let url = URL.createObjectURL(svg_blob);
+
+  let svg_win = window.open(url, "svg_win");
+}
+
 function generateWordCloud(request, sender, sendResposne) {
   try {
     let {selector, options:{wordOptions, generatorOptions}} = request;
@@ -43,7 +53,14 @@ function generateWordCloud(request, sender, sendResposne) {
     let filteredWords = filterWords(words, wordOptions, wordOptions);
     let phrases = getPhrases(filteredWords, wordOptions);
     console.debug({filteredWords, words, phrases, wordOptions, generatorOptions});
-    new WordCloudGenerator(generatorOptions).generateWordCloud(phrases);
+    let container = new WordCloudContainer(generatorOptions.svgWidth, generatorOptions.svgHeight);
+    new WordCloudGenerator(container, generatorOptions).generateWordCloud(
+      phrases,
+      () => {
+        openSvgInTab(container.svg);
+        container.cleanup();
+      }
+    );
   } catch(err) {
     console.error(err);
   } finally {
