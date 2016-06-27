@@ -32,35 +32,32 @@ function getWords(selector) {
 function filterWords(words, options) {
   let {ignoreWords, minWordSize} = options;
   let regex = RegExp(`^(?:${ignoreWords.join('|')})$`, 'i');
-  console.debug({regex});
   return words.filter(word => word.length >= minWordSize && !regex.test(word));
 }
 
-// http://stackoverflow.com/a/23589931
-function openSvgInTab(svg) {
+function serializeSvg(svg) {
   let serializer = new XMLSerializer();
-  let svg_blob = new Blob([serializer.serializeToString(svg)],
-                          {'type': "image/svg+xml"});
-  let url = URL.createObjectURL(svg_blob);
-
-  let svg_win = window.open(url, "svg_win");
+  return new Blob([serializer.serializeToString(svg)],
+                  {'type': "image/svg+xml"});
 }
 
-function generateWordCloud(request, sender, sendResposne) {
+function generateWordCloud(request, sender, sendResponse) {
   try {
     let {selector, options:{wordOptions, generatorOptions}} = request;
     let words = getWords(selector);
     let filteredWords = filterWords(words, wordOptions, wordOptions);
     let phrases = getPhrases(filteredWords, wordOptions);
-    console.debug({filteredWords, words, phrases, wordOptions, generatorOptions});
     let container = new WordCloudContainer(generatorOptions.svgWidth, generatorOptions.svgHeight);
     new WordCloudGenerator(container, generatorOptions).generateWordCloud(
       phrases,
       () => {
-        openSvgInTab(container.svg);
+        let svgBlob = serializeSvg(container.svg);
         container.cleanup();
+        sendResponse(svgBlob);
       }
     );
+    // need to return true so async send response can happen when word cloud drawn
+    return true;
   } catch(err) {
     console.error(err);
   } finally {
