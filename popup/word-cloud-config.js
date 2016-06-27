@@ -31,6 +31,7 @@ document.addEventListener("click", function(e) {
     }, (svgBlob) => {
       let url = URL.createObjectURL(svgBlob);
       chrome.tabs.create({url, index: tab.index});
+      window.close();
     });
   });
 });
