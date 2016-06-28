@@ -43,7 +43,7 @@ function serializeSvg(svg) {
 
 function generateWordCloud(request, sender, sendResponse) {
   try {
-    let {selector, options:{wordOptions, generatorOptions}} = request;
+    let {selector, wordOptions, generatorOptions} = request;
     let words = getWords(selector);
     let filteredWords = filterWords(words, wordOptions, wordOptions);
     let phrases = getPhrases(filteredWords, wordOptions);

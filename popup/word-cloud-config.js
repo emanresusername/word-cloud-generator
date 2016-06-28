@@ -1,65 +1,74 @@
-const STORAGE_KEY = 'storedOptions';
+let minWordSizeInput = document.getElementById('minWordSizeInput');
 
-function minWordSizeInput() {
-  return document.getElementById('minWordSizeInput');
-}
-function filterWordsTextarea() {
-  return document.getElementById('filterWordsTextarea');
-}
-function phraseSizeInput() {
-  return document.getElementById('phraseSizeInput');
-}
-function minFontSizeInput() {
-  return document.getElementById('minFontSizeInput');
-}
-function maxFontSizeInput() {
-  return document.getElementById('maxFontSizeInput');
-}
-function svgWidth() {
-  return document.getElementById('svgWidth');
-}
-function svgHeight() {
-  return document.getElementById('svgHeight');
-}
+let ignoreWordsInput = document.getElementById('filterWordsTextarea');
 
-function getPopupOptions() {
-  return {
-    wordOptions: {
-      minWordSize: Number(minWordSizeInput().value),
-      ignoreWords: filterWordsTextarea().value.trim().split(/\W+/),
-      phraseSize: Number(phraseSizeInput().value)
-    },
-    generatorOptions: {
-      minFontSize: Number(minFontSizeInput().value),
-      maxFontSize: Number(maxFontSizeInput().value),
-      svgWidth: Number(svgWidth().value),
-      svgHeight: Number(svgHeight().value)
-    }
+let phraseSizeInput = document.getElementById('phraseSizeInput');
+
+let minFontSizeInput = document.getElementById('minFontSizeInput');
+
+let maxFontSizeInput = document.getElementById('maxFontSizeInput');
+
+let svgWidthInput = document.getElementById('svgWidth');
+
+let svgHeightInput = document.getElementById('svgHeight');
+
+let generateButton = document.getElementById('generateButton');
+
+generateButton.addEventListener("click", function(e) {
+  let options = getInputOptions();
+  storeOptions(options);
+  generateWordCloud(options);
+});
+
+function withStoredOptions(callback) {
+  let options = {
+    minWordSize: 4,
+    ignoreWords: '',
+    phraseSize: 1,
+    minFontSize: 10,
+    maxFontSize: 40,
+    svgWidth: 500,
+    svgHeight: 500
   };
-}
 
-function getStoredOptions(callback) {
-  chrome.storage.local.get(STORAGE_KEY, (res) => {
-    callback(res[STORAGE_KEY]);
-  });
-}
-
-function syncPopupOptions() {
-  getStoredOptions((options) => {
-    if(!!options) {
-      let {
-        wordOptions:{minWordSize, ignoreWords, phraseSize},
-        generatorOptions:{minFontSize, maxFontSize, svgWidth, svgHeight}
-      } = options;
-      minFontSizeInput().value = minWordSize;
-      filterWordsTextarea().value = ignoreWords.join("\n");
-      phraseSizeInput().value = phraseSize;
-      minFontSizeInput().value = minFontSize;
-      maxFontSizeInput().value = maxFontSize;
-      svgWidth().value = svgWidth;
-      svgHeight().value = svgHeight;
+  chrome.storage.local.get(null, function(results) {
+    if(chrome.runtime.lastError) {
+      console.log(chrome.runtime.lastError);
+    } else {
+      let optionKeys = Object.keys(results);
+      for(let i = 0; i < optionKeys.length; ++i) {
+        let key = optionKeys[i];
+        let value = results[key];
+        if(!!value) {
+          options[key] = value;
+        }
+      }
+      callback(options);
     }
   });
+}
+
+function popuplateInputs(options) {
+  minWordSizeInput.value = options.minWordSize;
+  ignoreWordsInput.value = options.ignoreWords;
+  phraseSizeInput.value = options.phraseSize;
+  minFontSizeInput.value = options.minFontSize;
+  maxFontSizeInput.value = options.maxFontSize;
+  svgWidthInput.value = options.svgWidth;
+  svgHeightInput.value = options.svgHeight;
+}
+
+
+function getInputOptions() {
+  return {
+    minWordSize: Number(minWordSizeInput.value),
+    ignoreWords: ignoreWordsInput.value,
+    phraseSize: Number(phraseSizeInput.value),
+    minFontSize: Number(minFontSizeInput.value),
+    maxFontSize: Number(maxFontSizeInput.value),
+    svgWidth: Number(svgWidthInput.value),
+    svgHeight: Number(svgHeightInput.value)
+  };
 }
 
 function generateWordCloud(options) {
@@ -70,7 +79,17 @@ function generateWordCloud(options) {
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     let tab = tabs[0];
     chrome.tabs.sendMessage(tab.id, {
-      options: options,
+      wordOptions: {
+        minWordSize: options.minWordSize,
+        ignoreWords: options.ignoreWords.trim().split(/\W+/),
+        phraseSize: options.phraseSize
+      },
+      generatorOptions: {
+        minFontSize: options.minFontSize,
+        maxFontSize: options.maxFontSize,
+        svgWidth: options.svgWidth,
+        svgHeight: options.svgHeight
+      },
       selector: 'body>:not(svg)'
     }, (svgBlob) => {
       let url = URL.createObjectURL(svgBlob);
@@ -80,16 +99,17 @@ function generateWordCloud(options) {
   });
 }
 
-document.addEventListener("click", function(e) {
-  if (e.target.id == "generateButton") {
-    let options = getPopupOptions();
-    chrome.storage.local.set({[STORAGE_KEY]: options});
-    generateWordCloud(options);
-  } else {
-    return;
-  }
-});
+function storeOption(key, value) {
+  chrome.storage.local.set({[key]: value});
+}
 
-document.addEventListener('DOMContentLoaded', (e) => {
-  syncPopupOptions();
-});
+function storeOptions(options) {
+  let optionKeys = Object.keys(options);
+  for(var i = 0; i < optionKeys.length; ++i) {
+    let key = optionKeys[i];
+    let value = options[key];
+    storeOption(key, value);
+  }
+}
+
+withStoredOptions(popuplateInputs);
