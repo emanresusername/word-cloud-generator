@@ -83,9 +83,7 @@ function generateWordCloud(options) {
 document.addEventListener("click", function(e) {
   if (e.target.id == "generateButton") {
     let options = getPopupOptions();
-    let storageOptions = {};
-    storageOptions[STORAGE_KEY]= options;
-    chrome.storage.local.set(storageOptions);
+    chrome.storage.local.set({[STORAGE_KEY]: options});
     generateWordCloud(options);
   } else {
     return;
