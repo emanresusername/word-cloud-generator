@@ -14,11 +14,33 @@ let svgHeightInput = document.getElementById('svgHeight');
 
 let generateButton = document.getElementById('generateButton');
 
+let toggleSelectionCheckbox = document.getElementById('toggleSelectionCheckbox');
+
 generateButton.addEventListener("click", function(e) {
   let options = getInputOptions();
   storeOptions(options);
   generateWordCloud(options);
 });
+
+toggleSelectionCheckbox.addEventListener("click", (e) => {
+  if(e.target.checked) {
+    withActiveTab(startElementSelection);
+  } else {
+    withActiveTab(stopElementSelection);
+  }
+});
+
+function withActiveTab(callback) {
+  chrome.tabs.query({active: true, currentWindow: true}, (tabs) => callback(tabs[0]));
+}
+
+function startElementSelection(tab) {
+  chrome.tabs.sendMessage(tab.id, 'start-element-selection');
+}
+
+function stopElementSelection(tab) {
+  chrome.tabs.sendMessage(tab.id, 'stop-element-selection');
+}
 
 function withStoredOptions(callback) {
   let options = {
@@ -111,4 +133,6 @@ function storeOptions(options) {
   }
 }
 
+// stop currently running selecting (user can reactivate from the popup now if not done)
+withActiveTab(stopElementSelection);
 withStoredOptions(popuplateInputs);

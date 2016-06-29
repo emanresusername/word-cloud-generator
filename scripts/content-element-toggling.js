@@ -21,16 +21,25 @@ function leaveElement(event) {
   event.target.classList.remove(CONSIDERING_CLASS);
 }
 
-function startToggling() {
+function startElementSelection() {
   document.addEventListener('click', toggleElement);
   document.addEventListener('mouseover', considerElement);
   document.addEventListener('mouseout', leaveElement);
 }
 
-function stopToggling() {
+function stopElementSelection() {
   document.removeEventListener('click', toggleElement);
   document.removeEventListener('mouseover', considerElement);
   document.removeEventListener('mouseout', leaveElement);
 }
 
-startToggling();
+chrome.runtime.onMessage.addListener((msg) => {
+  switch(msg) {
+  case 'start-element-selection':
+    return startElementSelection();
+  case 'stop-element-selection':
+    return stopElementSelection();
+  default:
+    return true; // move on to next listener;
+  }
+});
