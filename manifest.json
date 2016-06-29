@@ -34,10 +34,14 @@
         {
             "matches": ["<all_urls>"],
             "js": [
-                "vendor/d3.min.js",
-                "vendor/d3-cloud.min.js",
-                "lib/word-cloud-container.js",
-                "lib/word-cloud-generator.js"
+                "vendor/scripts/d3.min.js",
+                "vendor/scripts/d3-cloud.min.js",
+                "scripts/word-cloud-container.js",
+                "scripts/word-cloud-generator.js",
+                "scripts/content-element-toggling.js"
+            ],
+            "css": [
+                "styles/content-element-toggling.css"
             ]
         }
     ]

@@ -89,8 +89,7 @@ function generateWordCloud(options) {
         maxFontSize: options.maxFontSize,
         svgWidth: options.svgWidth,
         svgHeight: options.svgHeight
-      },
-      selector: 'body>:not(svg)'
+      }
     }, (svgBlob) => {
       let url = URL.createObjectURL(svgBlob);
       chrome.tabs.create({url, index: tab.index});

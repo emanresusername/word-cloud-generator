@@ -1,0 +1,23 @@
+:root {
+  --border-radius: 6pt 8pt;
+  --box-shadow: 2px 2px 3px 4px #aaa;
+}
+
+.under-consideration {
+  border: 3pt #6F6 solid;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.toggled-content {
+  border: 3pt #66F solid;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.under-consideration.toggled-content {
+  border-color: #F66;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
