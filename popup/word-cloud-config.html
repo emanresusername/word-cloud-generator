@@ -4,80 +4,87 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="/vendor/styles/bootstrap.min.css">
+    <link rel="stylesheet" href="popup.css">
   </head>
   <body>
-    <div class="bg-info">
-      <h3 class="text-center">
-        Word Cloud Options
-      </h3>
-      <form>
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-xs-6">
-              <div class="form-group">
-                <label  for="phraseSizeInput">Phrase Size: </label>
-                <input type="number" id="phraseSizeInput" class="form-control" ></input>
-              </div>
-              <div class="form-group">
-                <label  for="minWordSizeInput">Minimum Word Length: </label>
-                <input type="number" id="minWordSizeInput" class="form-control" ></input>
-              </div>
-              <div class="form-group">
-                <label  for="filterWordsTextarea">Words to Ignore: </label>
-                <textarea type="" id="filterWordsTextarea" class="form-control" rows="2">
-                </textarea>
-              </div>
-              <div class="form-group">
-                <label  for="selectorTextarea">Content Selectors: </label>
-                <textarea type="" id="selectorTextarea" class="form-control" rows="1">
-                </textarea>
-              </div>
+    <form>
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-6">
+            <div class="form-group">
+              <label  for="phraseSizeInput">Phrase Size </label>
+              <span class="badge pull-right">?</span>
+              <input type="number" id="phraseSizeInput" class="form-control" ></input>
             </div>
-            <div class="col-xs-6">
-              <div class="form-group">
-                <label  for="minFontSizeInput">Smallest Font Size in Word Cloud: </label>
-                <div class="input-group">
-                  <input type="number" id="minFontSizeInput" class="form-control" ></input>
-                  <div class="input-group-addon">px</div>
-                </div>
-              </div>
-              <div class="form-group">
-                <label  for="maxFontSizeInput">Biggest Font Size in Word Cloud: </label>
-                <div class="input-group">
-                  <input type="number" id="maxFontSizeInput" class="form-control" ></input>
-                  <div class="input-group-addon">px</div>
-                </div>
-              </div>
-              <div class="form-group">
-                <label  for="svgWidth">Word Cloud Image Width: </label>
-                <div class="input-group">
-                  <input type="number" id="svgWidth" class="form-control" ></input>
-                  <div class="input-group-addon">px</div>
-                </div>
-              </div>
-              <div class="form-group">
-                <label  for="svgHeight">Word Cloud Image Height: </label>
-                <div class="input-group">
-                  <input type="number" id="svgHeight" class="form-control" ></input>
-                  <div class="input-group-addon">px</div>
-                </div>
-              </div>
+            <div class="form-group">
+              <label  for="minWordSizeInput">Min Word Length </label>
+              <span class="badge pull-right">?</span>
+              <input type="number" id="minWordSizeInput" class="form-control" ></input>
+            </div>
+            <div class="form-group">
+              <label  for="filterWordsTextarea">Words to Ignore </label>
+              <span class="badge pull-right">?</span>
+              <textarea type="" id="filterWordsTextarea" class="form-control" rows="2">
+              </textarea>
+            </div>
+            <div class="form-group">
+              <label  for="selectorTextarea">Content Selectors </label>
+              <span class="badge pull-right">?</span>
+              <textarea type="" id="selectorTextarea" class="form-control" rows="1">
+              </textarea>
             </div>
           </div>
-          <div class="btn-group" role="group" aria-label="...">
-            <button type="button" class="btn btn-warning" id="clearSelectionButton">
-              Clear Selection
-            </button>
-            <button type="button" class="btn btn-success" id="toggleSelectionModeButton">
-              Enter Selection Mode
-            </button>
-            <button id="generateButton" type="button" class="btn btn-primary">
-              Generate
-            </button>
+          <div class="col-xs-6">
+            <div class="form-group">
+              <label  for="minFontSizeInput">Min Font Size </label>
+              <span class="badge pull-right">?</span>
+              <div class="input-group">
+                <input type="number" id="minFontSizeInput" class="form-control" ></input>
+                <div class="input-group-addon">px</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label  for="maxFontSizeInput">Max Font Size </label>
+              <span class="badge pull-right">?</span>
+              <div class="input-group">
+                <input type="number" id="maxFontSizeInput" class="form-control" ></input>
+                <div class="input-group-addon">px</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label  for="svgWidth">Viz Width </label>
+              <span class="badge pull-right">?</span>
+              <div class="input-group">
+                <input type="number" id="svgWidth" class="form-control" ></input>
+                <div class="input-group-addon">px</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label  for="svgHeight">Viz Height: </label>
+              <span class="badge pull-right">?</span>
+              <div class="input-group">
+                <input type="number" id="svgHeight" class="form-control" ></input>
+                <div class="input-group-addon">px</div>
+              </div>
+            </div>
           </div>
         </div>
-      </form>
-    </div>
+        <div class="btn-group" role="group" aria-label="...">
+          <button type="button" class="btn btn-warning" id="clearSelectionButton">
+            Clear Selection
+            <span class="badge">?</span>
+          </button>
+          <button type="button" class="btn btn-success" id="toggleSelectionModeButton">
+            Enter Selection Mode
+            <span class="badge">?</span>
+          </button>
+          <button id="generateButton" type="button" class="btn btn-primary">
+            Generate
+            <span class="badge">?</span>
+          </button>
+        </div>
+      </div>
+    </form>
     <script src="word-cloud-config.js"></script>
   </body>
 </html>
