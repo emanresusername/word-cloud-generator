@@ -14,7 +14,11 @@ let svgHeightInput = document.getElementById('svgHeight');
 
 let generateButton = document.getElementById('generateButton');
 
-let toggleSelectionCheckbox = document.getElementById('toggleSelectionCheckbox');
+let toggleSelectionModeButton = document.getElementById('toggleSelectionModeButton');
+
+let clearSelectionButton = document.getElementById('clearSelectionButton');
+
+clearSelectionButton.addEventListener("click", clearSelectionInActiveTab);
 
 generateButton.addEventListener("click", function(e) {
   let options = getInputOptions();
@@ -22,11 +26,19 @@ generateButton.addEventListener("click", function(e) {
   generateWordCloud(options);
 });
 
-toggleSelectionCheckbox.addEventListener("click", (e) => {
-  if(e.target.checked) {
-    withActiveTab(startElementSelection);
+toggleSelectionModeButton.addEventListener("click", (e) => {
+  let button = toggleSelectionModeButton;
+  button.toggled = !button.toggled;
+  if(button.toggled) {
+    startElementSelectionInActiveTab();
+    button.classList.remove('btn-success');
+    button.classList.add('btn-danger');
+    button.textContent = "Exit Selection Mode";
   } else {
-    withActiveTab(stopElementSelection);
+    stopElementSelectionInActiveTab();
+    button.classList.remove('btn-danger');
+    button.classList.add('btn-success');
+    button.textContent = "Enter Selection Mode";
   }
 });
 
@@ -34,12 +46,20 @@ function withActiveTab(callback) {
   chrome.tabs.query({active: true, currentWindow: true}, (tabs) => callback(tabs[0]));
 }
 
-function startElementSelection(tab) {
-  chrome.tabs.sendMessage(tab.id, 'start-element-selection');
+function sendMessage(tab, msg) {
+  chrome.tabs.sendMessage(tab.id, msg);
 }
 
-function stopElementSelection(tab) {
-  chrome.tabs.sendMessage(tab.id, 'stop-element-selection');
+function clearSelectionInActiveTab() {
+  withActiveTab((tab) => sendMessage(tab, 'clear-selection'));
+}
+
+function startElementSelectionInActiveTab() {
+  withActiveTab((tab) => sendMessage(tab, 'start-element-selection'));
+}
+
+function stopElementSelectionInActiveTab() {
+  withActiveTab((tab) => sendMessage(tab, 'stop-element-selection'));
 }
 
 function withStoredOptions(callback) {
@@ -134,5 +154,5 @@ function storeOptions(options) {
 }
 
 // stop currently running selecting (user can reactivate from the popup now if not done)
-withActiveTab(stopElementSelection);
+withActiveTab(stopElementSelectionInActiveTab);
 withStoredOptions(popuplateInputs);

@@ -59,17 +59,18 @@
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="checkbox col-xs-offset-2">
-              <label>
-                <input type="checkbox" id="toggleSelectionCheckbox"> Toggling elements used in word cloud
-              </label>
-            </div>
+          <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-warning" id="clearSelectionButton">
+              Clear Selection
+            </button>
+            <button type="button" class="btn btn-success" id="toggleSelectionModeButton">
+              Enter Selection Mode
+            </button>
+            <button id="generateButton" type="button" class="btn btn-primary">
+              Generate
+            </button>
           </div>
         </div>
-        <button id="generateButton" type="button" class="btn btn-small center-block">
-          Generate
-        </button>
       </form>
     </div>
     <script src="word-cloud-config.js"></script>

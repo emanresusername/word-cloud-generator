@@ -33,12 +33,21 @@ function stopElementSelection() {
   document.removeEventListener('mouseout', leaveElement);
 }
 
+function clearSelection() {
+  // NOTE: htmlcollections are live and this one changes as you remove the classes
+  [for (elem of document.getElementsByClassName(TOGGLED_CLASS)) elem].forEach(elem => {
+    elem.classList.remove(TOGGLED_CLASS);
+  });
+}
+
 chrome.runtime.onMessage.addListener((msg) => {
   switch(msg) {
   case 'start-element-selection':
     return startElementSelection();
   case 'stop-element-selection':
     return stopElementSelection();
+  case 'clear-selection':
+    return clearSelection();
   default:
     return true; // move on to next listener;
   }
