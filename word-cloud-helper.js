@@ -43,8 +43,8 @@ function serializeSvg(svg) {
 
 function generateWordCloud(request, sender, sendResponse) {
   try {
-    let {wordOptions, generatorOptions} = request;
-    let words = getWords('.' + TOGGLED_CLASS);
+    let {wordOptions, generatorOptions, selector} = request;
+    let words = getWords(['.' + TOGGLED_CLASS, selector].join(','));
     let filteredWords = filterWords(words, wordOptions, wordOptions);
     let phrases = getPhrases(filteredWords, wordOptions);
     let container = new WordCloudContainer(generatorOptions.svgWidth, generatorOptions.svgHeight);

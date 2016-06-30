@@ -2,6 +2,8 @@ let minWordSizeInput = document.getElementById('minWordSizeInput');
 
 let ignoreWordsInput = document.getElementById('filterWordsTextarea');
 
+let selectorInput = document.getElementById('selectorTextarea');
+
 let phraseSizeInput = document.getElementById('phraseSizeInput');
 
 let minFontSizeInput = document.getElementById('minFontSizeInput');
@@ -70,7 +72,8 @@ function withStoredOptions(callback) {
     minFontSize: 10,
     maxFontSize: 40,
     svgWidth: 500,
-    svgHeight: 500
+    svgHeight: 500,
+    selector: ''
   };
 
   chrome.storage.local.get(null, function(results) {
@@ -93,6 +96,7 @@ function withStoredOptions(callback) {
 function popuplateInputs(options) {
   minWordSizeInput.value = options.minWordSize;
   ignoreWordsInput.value = options.ignoreWords;
+  selectorInput.value = options.selector;
   phraseSizeInput.value = options.phraseSize;
   minFontSizeInput.value = options.minFontSize;
   maxFontSizeInput.value = options.maxFontSize;
@@ -105,6 +109,7 @@ function getInputOptions() {
   return {
     minWordSize: Number(minWordSizeInput.value),
     ignoreWords: ignoreWordsInput.value,
+    selector: selectorInput.value,
     phraseSize: Number(phraseSizeInput.value),
     minFontSize: Number(minFontSizeInput.value),
     maxFontSize: Number(maxFontSizeInput.value),
@@ -131,7 +136,8 @@ function generateWordCloud(options) {
         maxFontSize: options.maxFontSize,
         svgWidth: options.svgWidth,
         svgHeight: options.svgHeight
-      }
+      },
+      selector: options.selector
     }, (svgBlob) => {
       let url = URL.createObjectURL(svgBlob);
       chrome.tabs.create({url, index: tab.index});
