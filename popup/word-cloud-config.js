@@ -128,7 +128,7 @@ function generateWordCloud(options) {
     chrome.tabs.sendMessage(tab.id, {
       wordOptions: {
         minWordSize: options.minWordSize,
-        ignoreWords: options.ignoreWords.trim().split(/\W+/),
+        ignoreWords: options.ignoreWords.trim().split(/\s+|,/),
         phraseSize: options.phraseSize
       },
       generatorOptions: {

@@ -1,5 +1,12 @@
 body {
   padding: 5px;
   background-color: #acf;
+}
+
+.form-group label {
   color: #fff;
+}
+
+.help-question-mark {
+  cursor: pointer;
 }
