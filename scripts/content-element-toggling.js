@@ -35,7 +35,13 @@ function stopElementSelection() {
 
 function clearSelection() {
   // NOTE: htmlcollections are live and this one changes as you remove the classes
-  [for (elem of document.getElementsByClassName(TOGGLED_CLASS)) elem].forEach(elem => {
+  let liveToggled = document.getElementsByClassName(TOGGLED_CLASS);
+  // AMO didn't like es6 for-comprehensions :(
+  let toggled = [];
+  for (let i = 0; i < liveToggled.length; ++i) {
+    toggled.push(liveToggled.item(i));
+  }
+  toggled.forEach(elem => {
     elem.classList.remove(TOGGLED_CLASS);
   });
 }
