@@ -2,9 +2,9 @@
 
     "manifest_version": 2,
     "name": "Word Cloud Generator",
-    "version": "1.0",
+    "version": "0.1.0",
 
-    "description": "generate a word cloud for the content in selected sections of the page",
+    "description": "Generate a word cloud visualization of webpages",
     "icons": {
         "32": "icons/word-cloud-generator-32.png",
         "48": "icons/word-cloud-generator-48.png",
