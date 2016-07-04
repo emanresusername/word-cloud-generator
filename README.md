@@ -1,5 +1,7 @@
 # Word Cloud Generator
 
+[![Join the chat at https://gitter.im/emanresusername/word-cloud-generator](https://badges.gitter.im/emanresusername/word-cloud-generator.svg)](https://gitter.im/emanresusername/word-cloud-generator?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 A web extension to generate word cloud visualizations for web pages
 
 # [Mad Props](https://www.urbandictionary.com/define.php?term=Mad%20Props) to
