@@ -4,6 +4,9 @@
 
 A web extension to generate word cloud visualizations for web pages
 
+# Browser extensions
+- [Firefox](https://addons.mozilla.org/en-US/firefox/addon/word-cloud-generator/)
+
 # [Mad Props](https://www.urbandictionary.com/define.php?term=Mad%20Props) to
 
 - [d3-cloud](https://github.com/jasondavies/d3-cloud)
