@@ -46,15 +46,73 @@ function clearSelection() {
   });
 }
 
-chrome.runtime.onMessage.addListener((msg) => {
-  switch(msg) {
-  case 'start-element-selection':
-    return startElementSelection();
-  case 'stop-element-selection':
-    return stopElementSelection();
-  case 'clear-selection':
-    return clearSelection();
+function cleanTextContent(elem) {
+  return elem.textContent.trim()
+    .replace(/,/g, ' ')
+    .replace(/[^a-zA-Z0-9\s\-]/g, '')
+    .toUpperCase();
+}
+
+function getPhrases(words, options) {
+  let {phraseSize} = options;
+  switch (phraseSize) {
+  case 1:
+    return words;
   default:
-    return true; // move on to next listener;
+    let stopIndex = words.length - phraseSize;
+    let phrases = [];
+    for (let i = 0; i <= stopIndex; ++i) {
+      phrases.push(words.slice(i, i + phraseSize).join(' '));
+    }
+    return phrases;
   }
-});
+}
+
+function getWordsBySelector(selector) {
+  let words = [];
+  let selection = document.querySelectorAll(selector);
+  for(let i = 0; i < selection.length; ++i) {
+    words = words.concat(cleanTextContent(selection.item(i)).split(/\s+/));
+  }
+  return words;
+}
+
+function filterWords(words, options) {
+  let {ignoreWords, minWordSize} = options;
+  let regex = RegExp(`^(?:${ignoreWords.join('|')})$`, 'i');
+  return words.filter(word => word.length >= minWordSize && !regex.test(word));
+}
+
+function getSelectedPhrases(selector, wordOptions) {
+  let combinedSelector = '.' + TOGGLED_CLASS;
+  if(selector && selector.trim().length > 0) {
+    combinedSelector += ',' + selector;
+  }
+  let words = getWordsBySelector(combinedSelector);
+  let filteredWords = filterWords(words, wordOptions);
+  let phrases = getPhrases(filteredWords, wordOptions);
+  return phrases;
+}
+
+// Handle messages from the add-on background page (only in top level iframes)
+if (window.parent == window) {
+  chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+    switch(msg) {
+    case 'start-element-selection':
+      startElementSelection();
+      break;
+    case 'stop-element-selection':
+      stopElementSelection();
+      break;
+    case 'clear-selection':
+      clearSelection();
+      break;
+    default:
+      let {selector, wordOptions} = msg;
+      if(wordOptions) {
+        let phrases = getSelectedPhrases(selector, wordOptions);
+        sendResponse({words: phrases});
+      }
+    }
+  });
+}

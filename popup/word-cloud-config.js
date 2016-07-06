@@ -20,12 +20,29 @@ let toggleSelectionModeButton = document.getElementById('toggleSelectionModeButt
 
 let clearSelectionButton = document.getElementById('clearSelectionButton');
 
+let elementSelectionPort = chrome.runtime.connect({name: "elementSelection"});
+
+let generateWordCloudPort = chrome.runtime.connect({name: "generateWordCloud"});
+
 clearSelectionButton.addEventListener("click", clearSelectionInActiveTab);
 
 generateButton.addEventListener("click", function(e) {
   let options = getInputOptions();
   storeOptions(options);
-  generateWordCloud(options);
+  generateWordCloudPort.postMessage({
+    wordOptions: {
+      minWordSize: options.minWordSize,
+      ignoreWords: options.ignoreWords.trim().split(/\s+|,/),
+      phraseSize: options.phraseSize
+    },
+    generatorOptions: {
+      minFontSize: options.minFontSize,
+      maxFontSize: options.maxFontSize,
+      svgWidth: options.svgWidth,
+      svgHeight: options.svgHeight
+    },
+    selector: options.selector
+  });
 });
 
 toggleSelectionModeButton.addEventListener("click", (e) => {
@@ -44,53 +61,29 @@ toggleSelectionModeButton.addEventListener("click", (e) => {
   }
 });
 
-function withActiveTab(callback) {
-  chrome.tabs.query({active: true, currentWindow: true}, (tabs) => callback(tabs[0]));
-}
-
-function sendMessage(tab, msg) {
-  chrome.tabs.sendMessage(tab.id, msg);
+function storeOptions(options) {
+  chrome.runtime.sendMessage({
+    type: 'storeOptions',
+    options
+  });
 }
 
 function clearSelectionInActiveTab() {
-  withActiveTab((tab) => sendMessage(tab, 'clear-selection'));
+  elementSelectionPort.postMessage('clear-selection');
 }
 
 function startElementSelectionInActiveTab() {
-  withActiveTab((tab) => sendMessage(tab, 'start-element-selection'));
+  elementSelectionPort.postMessage('start-element-selection');
 }
 
 function stopElementSelectionInActiveTab() {
-  withActiveTab((tab) => sendMessage(tab, 'stop-element-selection'));
+  elementSelectionPort.postMessage('stop-element-selection');
 }
 
 function withStoredOptions(callback) {
-  let options = {
-    minWordSize: 4,
-    ignoreWords: '',
-    phraseSize: 1,
-    minFontSize: 10,
-    maxFontSize: 40,
-    svgWidth: 500,
-    svgHeight: 500,
-    selector: ''
-  };
-
-  chrome.storage.local.get(null, function(results) {
-    if(chrome.runtime.lastError) {
-      console.log(chrome.runtime.lastError);
-    } else {
-      let optionKeys = Object.keys(results);
-      for(let i = 0; i < optionKeys.length; ++i) {
-        let key = optionKeys[i];
-        let value = results[key];
-        if(!!value) {
-          options[key] = value;
-        }
-      }
-      callback(options);
-    }
-  });
+  chrome.runtime.sendMessage({
+    type: 'getOptions'
+  }, callback);
 }
 
 function popuplateInputs(options) {
@@ -118,47 +111,4 @@ function getInputOptions() {
   };
 }
 
-function generateWordCloud(options) {
-  chrome.tabs.executeScript(null, {
-    file: "/word-cloud-helper.js"
-  });
-
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    let tab = tabs[0];
-    chrome.tabs.sendMessage(tab.id, {
-      wordOptions: {
-        minWordSize: options.minWordSize,
-        ignoreWords: options.ignoreWords.trim().split(/\s+|,/),
-        phraseSize: options.phraseSize
-      },
-      generatorOptions: {
-        minFontSize: options.minFontSize,
-        maxFontSize: options.maxFontSize,
-        svgWidth: options.svgWidth,
-        svgHeight: options.svgHeight
-      },
-      selector: options.selector
-    }, (svgBlob) => {
-      let url = URL.createObjectURL(svgBlob);
-      chrome.tabs.create({url, index: tab.index});
-      window.close();
-    });
-  });
-}
-
-function storeOption(key, value) {
-  chrome.storage.local.set({[key]: value});
-}
-
-function storeOptions(options) {
-  let optionKeys = Object.keys(options);
-  for(var i = 0; i < optionKeys.length; ++i) {
-    let key = optionKeys[i];
-    let value = options[key];
-    storeOption(key, value);
-  }
-}
-
-// stop currently running selecting (user can reactivate from the popup now if not done)
-withActiveTab(stopElementSelectionInActiveTab);
 withStoredOptions(popuplateInputs);

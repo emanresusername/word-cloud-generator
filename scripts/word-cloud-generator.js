@@ -61,8 +61,8 @@ class WordCloudGenerator {
         return fontScale(d.count);
       })
       .on("end", (wordCounts) => {
-        this.draw(wordCounts);
-        endCallback();
+          this.draw(wordCounts);
+          endCallback();
       })
       .timeInterval(10);
   }
