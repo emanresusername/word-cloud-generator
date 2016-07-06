@@ -45,7 +45,7 @@ function generateWordCloud(request, sender, sendResponse) {
   try {
     let {wordOptions, generatorOptions, selector} = request;
     let combinedSelector = '.' + TOGGLED_CLASS;
-    if(selector && selector.length > 0) {
+    if(selector && selector.trim().length > 0) {
       combinedSelector += ',' + selector;
     }
     let words = getWords(combinedSelector);
