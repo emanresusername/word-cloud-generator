@@ -35,7 +35,7 @@ class WordCloudGenerator {
   }
 
   getWordCounts(words) {
-    return Object.values(words.reduce((map, word) => {
+    return d3.values(words.reduce((map, word) => {
       if (map.hasOwnProperty(word)) {
         ++map[word].count;
       } else {
