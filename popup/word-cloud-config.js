@@ -112,3 +112,7 @@ function getInputOptions() {
 }
 
 withStoredOptions(popuplateInputs);
+// for the help messages for the ? badges
+$(function () {
+  $('[data-toggle="popover"]').popover();
+});
