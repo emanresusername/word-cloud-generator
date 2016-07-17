@@ -4,6 +4,7 @@ let panelUI;
 function initPanel() {
   let container = document.createElement("div");
   container.setAttribute("style", "position: fixed; top: 0; left: 0; z-index: 10000; width: 475px; height: 380px; resize: both; overflow: auto; margin: 0; padding: 0;");
+  container.isWordCloudContainer = true;
   document.body.appendChild(container);
 
   let iframe = document.createElement("iframe");
