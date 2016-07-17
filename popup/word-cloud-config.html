@@ -118,19 +118,13 @@
           </div>
         </div>
         <div class="row">
-          <a class="badge help-question-mark" data-trigger="focus"
-             data-toggle="popover" data-placement="auto" data-container="body"
-             data-content="Deselects any elements selected in the selection mode"
-             data-title="Deselect Selected Elements"
-             tabindex="0" role="button"
-          >?</a>
           <button type="button" class="btn btn-warning" id="clearSelectionButton">
             Clear Selection
           </button>
           <a class="badge help-question-mark" data-trigger="focus"
              data-toggle="popover" data-placement="auto" data-container="body"
-             data-content="When in selection mode, you can select elements to be included in the word cloud by hovering over and clicking them. To deselect an element, simply click a selected element. Borders will indicate which elements are selected"
-             data-title="Selection Mode"
+             data-content="Deselects any elements selected in the selection mode"
+             data-title="Deselect Selected Elements"
              tabindex="0" role="button"
           >?</a>
           <button type="button" class="btn btn-success" id="toggleSelectionModeButton">
@@ -138,13 +132,19 @@
           </button>
           <a class="badge help-question-mark" data-trigger="focus"
              data-toggle="popover" data-placement="auto" data-container="body"
-             data-content="Get all the words from the selected elements, filter out the unwanted words, take them in groups of the phrase size, and show a word cloud visualization of the number of times each word (group) appears."
-             data-title="Generate the Word Cloud!"
+             data-content="When in selection mode, you can select elements to be included in the word cloud by hovering over and clicking them. To deselect an element, simply click a selected element. Borders will indicate which elements are selected"
+             data-title="Selection Mode"
              tabindex="0" role="button"
           >?</a>
           <button id="generateButton" type="button" class="btn btn-primary">
             Generate
           </button>
+          <a class="badge help-question-mark" data-trigger="focus"
+             data-toggle="popover" data-placement="auto" data-container="body"
+             data-content="Get all the words from the selected elements, filter out the unwanted words, take them in groups of the phrase size, and show a word cloud visualization of the number of times each word (group) appears."
+             data-title="Generate the Word Cloud!"
+             tabindex="0" role="button"
+          >?</a>
         </div>
       </div>
     </form>
