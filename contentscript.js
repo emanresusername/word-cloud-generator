@@ -19,8 +19,7 @@ function initPanel() {
 
 function serializeSvg(svg) {
   let serializer = new XMLSerializer();
-  return new Blob([serializer.serializeToString(svg)],
-                  {'type': "image/svg+xml"});
+  return serializer.serializeToString(svg);
 }
 
 function togglePanel(panelUI) {

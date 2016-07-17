@@ -48,8 +48,12 @@ function withStoredOptions(callback) {
   });
 }
 
-function openSvgBlobInTab(svgBlob) {
+function openSvgBlobInTab(svgString) {
   withActiveTab((tab) => {
+    let svgBlob = new Blob(
+      [svgString],
+      {type: "image/svg+xml"}
+    );
     let url = URL.createObjectURL(svgBlob);
     chrome.tabs.create({url, index: tab.index});
   });
