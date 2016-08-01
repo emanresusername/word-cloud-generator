@@ -3,7 +3,7 @@ let panelUI;
 // Create the panel ui iframe and inject it in the current page
 function initPanel() {
   let container = document.createElement("div");
-  container.setAttribute("style", "position: fixed; top: 0; left: 0; z-index: 10000; width: 475px; height: 380px; resize: both; overflow: auto; margin: 0; padding: 0;");
+  container.setAttribute("style", "position: fixed; top: 0; left: 0; z-index: 10000; width: 475px; height: 390px; resize: both; overflow: auto; margin: 0; padding: 0;");
   container.isWordCloudContainer = true;
   document.body.appendChild(container);
 

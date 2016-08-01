@@ -10,3 +10,12 @@ body {
 .help-question-mark {
   cursor: pointer;
 }
+
+.origin-story-row {
+  margin-top: 4px;
+  border-top: 1px dashed white;
+}
+
+.origin-story-link {
+  color: white;
+}
