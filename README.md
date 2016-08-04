@@ -6,7 +6,7 @@ A web extension to generate word cloud visualizations for web pages
 
 # Browser extensions
 - [Firefox](https://addons.mozilla.org/addon/word-cloud-generator?src=external-github)
-- Opera - submitted . . .
+- [Opera](https://addons.opera.com/en/extensions/details/word-cloud-generator)
 - [Chrome](https://chrome.google.com/webstore/detail/word-cloud-generator/demclmhdcbofendohdngkfokmbcgickb)
 
 # [Mad Props](https://www.urbandictionary.com/define.php?term=Mad%20Props) to
