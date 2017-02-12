@@ -1,1 +1,5 @@
 .DS_Store
+.ensime
+.ensime_cache
+ensime.sbt
+target/
